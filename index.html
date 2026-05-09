@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced Student Management System</title>
+
+    <!-- FONT AWESOME -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <!-- CHART JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- DARK MODE BUTTON -->
+    <button id="themeToggle" class="theme-btn">
+      <i class="fa-solid fa-moon"></i>
+    </button>
+
+    <div class="container">
+      <!-- HEADER -->
+      <div class="header">
+        <h1>🎓 Student Management System</h1>
+        <p>Advanced CRUD System Without Backend</p>
+      </div>
+
+      <!-- DASHBOARD -->
+      <div class="dashboard">
+        <div class="card total">
+          <i class="fa-solid fa-users"></i>
+          <h2 id="totalStudents">0</h2>
+          <p>Total Students</p>
+        </div>
+
+        <div class="card passed">
+          <i class="fa-solid fa-check"></i>
+          <h2 id="passedStudents">0</h2>
+          <p>Passed Students</p>
+        </div>
+
+        <div class="card failed">
+          <i class="fa-solid fa-xmark"></i>
+          <h2 id="failedStudents">0</h2>
+          <p>Failed Students</p>
+        </div>
+
+        <div class="card topper">
+          <i class="fa-solid fa-trophy"></i>
+          <h2 id="topStudent">-</h2>
+          <p>Top Student</p>
+        </div>
+      </div>
+
+      <!-- FORM -->
+      <div class="form-container">
+        <h2>Add Student</h2>
+
+        <div class="form-grid">
+          <input type="text" id="name" placeholder="Student Name" />
+
+          <input type="number" id="age" placeholder="Age" />
+
+          <input type="text" id="city" placeholder="City" />
+
+          <input type="number" id="m1" placeholder="Marks 1" />
+
+          <input type="number" id="m2" placeholder="Marks 2" />
+
+          <input type="number" id="m3" placeholder="Marks 3" />
+
+          <select id="attendance">
+            <option value="true">Present</option>
+            <option value="false">Absent</option>
+          </select>
+
+          <button id="addBtn">
+            <i class="fa-solid fa-plus"></i>
+            Add Student
+          </button>
+        </div>
+      </div>
+
+      <!-- SEARCH -->
+      <div class="search-box">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="🔍 Search student by name..."
+        />
+      </div>
+
+      <!-- ACTION BUTTONS -->
+      <div class="action-buttons">
+        <button id="showBtn">
+          <i class="fa-solid fa-list"></i>
+          All Students
+        </button>
+
+        <button id="sortBtn">
+          <i class="fa-solid fa-sort"></i>
+          Sort By Marks
+        </button>
+
+        <button id="exportBtn">
+          <i class="fa-solid fa-file-export"></i>
+          Export Data
+        </button>
+      </div>
+
+      <!-- CHART -->
+      <div class="chart-container">
+        <canvas id="studentChart"></canvas>
+      </div>
+
+      <!-- STUDENTS -->
+      <div id="output"></div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
