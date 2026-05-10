@@ -29,7 +29,6 @@ const sortBtn = document.getElementById("sortBtn");
 
 const exportBtn = document.getElementById("exportBtn");
 
-// Dashboard
 const totalStudents = document.getElementById("totalStudents");
 
 const passedStudents = document.getElementById("passedStudents");
@@ -38,26 +37,37 @@ const failedStudents = document.getElementById("failedStudents");
 
 const topStudentText = document.getElementById("topStudent");
 
-// ============================
-// SAVE
-// ============================
+// TOAST
+function showToast(message, color = "#16a34a") {
+  const toast = document.getElementById("toast");
 
+  toast.innerText = message;
+
+  toast.style.background = color;
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000);
+}
+
+// SAVE
 function saveData() {
   localStorage.setItem("students", JSON.stringify(students));
 }
 
-// ============================
 // TOTAL
-// ============================
-
 function calculateTotal(marks) {
   return marks.reduce((a, b) => a + b, 0);
 }
 
-// ============================
-// GRADE
-// ============================
+// PERCENTAGE
+function getPercentage(total) {
+  return ((total / 300) * 100).toFixed(1);
+}
 
+// GRADE
 function getGrade(total) {
   if (total >= 240) return "A";
 
@@ -68,18 +78,25 @@ function getGrade(total) {
   return "F";
 }
 
-// ============================
-// RESULT
-// ============================
+// REMARKS
+function getRemarks(percentage) {
+  if (percentage >= 90) return "Excellent";
 
+  if (percentage >= 75) return "Very Good";
+
+  if (percentage >= 60) return "Good";
+
+  if (percentage >= 40) return "Average";
+
+  return "Poor";
+}
+
+// RESULT
 function getResult(total, attendance) {
   return total >= 180 && attendance ? "Pass" : "Fail";
 }
 
-// ============================
 // DASHBOARD
-// ============================
-
 function updateDashboard() {
   totalStudents.innerText = students.length;
 
@@ -98,7 +115,7 @@ function updateDashboard() {
       failed++;
     }
 
-    if (calculateTotal(student.marks) > calculateTotal(topper.marks)) {
+    if (total > calculateTotal(topper.marks)) {
       topper = student;
     }
   });
@@ -107,25 +124,26 @@ function updateDashboard() {
 
   failedStudents.innerText = failed;
 
-  topStudentText.innerText = topper.name;
+  topStudentText.innerText = topper?.name || "-";
 }
 
-// ============================
 // DISPLAY
-// ============================
-
 function displayStudents(data = students) {
   output.innerHTML = "";
 
   data.forEach((student, index) => {
     let total = calculateTotal(student.marks);
 
+    let percentage = getPercentage(total);
+
     let grade = getGrade(total);
+
+    let remarks = getRemarks(percentage);
 
     let result = getResult(total, student.attendance);
 
     output.innerHTML += `
-
+    
       <div class="student-card">
 
         <div class="student-header">
@@ -133,9 +151,7 @@ function displayStudents(data = students) {
           <h3>${student.name}</h3>
 
           <span class="badge ${result === "Pass" ? "pass" : "fail"}">
-
             ${result}
-
           </span>
 
         </div>
@@ -150,7 +166,11 @@ function displayStudents(data = students) {
 
           <p><strong>Total:</strong> ${total}</p>
 
+          <p><strong>Percentage:</strong> ${percentage}%</p>
+
           <p><strong>Grade:</strong> ${grade}</p>
+
+          <p><strong>Remarks:</strong> ${remarks}</p>
 
           <p>
             <strong>Attendance:</strong>
@@ -178,7 +198,6 @@ function displayStudents(data = students) {
         </div>
 
       </div>
-
     `;
   });
 
@@ -187,10 +206,7 @@ function displayStudents(data = students) {
   updateChart();
 }
 
-// ============================
 // ADD
-// ============================
-
 addBtn.addEventListener("click", () => {
   let name = document.getElementById("name").value;
 
@@ -208,6 +224,7 @@ addBtn.addEventListener("click", () => {
 
   if (!name || !age || !city) {
     alert("Please fill all fields");
+
     return;
   }
 
@@ -224,12 +241,11 @@ addBtn.addEventListener("click", () => {
   displayStudents();
 
   clearForm();
+
+  showToast("Student Added Successfully");
 });
 
-// ============================
 // CLEAR
-// ============================
-
 function clearForm() {
   document.getElementById("name").value = "";
 
@@ -244,12 +260,9 @@ function clearForm() {
   document.getElementById("m3").value = "";
 }
 
-// ============================
 // DELETE
-// ============================
-
 function deleteStudent(index) {
-  let check = confirm("Delete student?");
+  let check = confirm("Delete Student?");
 
   if (check) {
     students.splice(index, 1);
@@ -257,49 +270,76 @@ function deleteStudent(index) {
     saveData();
 
     displayStudents();
+
+    showToast("Student Deleted", "#dc2626");
   }
 }
 
-// ============================
-// EDIT
-// ============================
+// MODAL
+let currentEditIndex = null;
 
+const modal = document.getElementById("editModal");
+
+// EDIT
 function editStudent(index) {
+  currentEditIndex = index;
+
   let student = students[index];
 
-  let name = prompt("Enter Name", student.name);
+  document.getElementById("editName").value = student.name;
 
-  let age = prompt("Enter Age", student.age);
+  document.getElementById("editAge").value = student.age;
 
-  let city = prompt("Enter City", student.city);
+  document.getElementById("editCity").value = student.city;
 
-  let m1 = prompt("Marks 1", student.marks[0]);
+  document.getElementById("editM1").value = student.marks[0];
 
-  let m2 = prompt("Marks 2", student.marks[1]);
+  document.getElementById("editM2").value = student.marks[1];
 
-  let m3 = prompt("Marks 3", student.marks[2]);
+  document.getElementById("editM3").value = student.marks[2];
 
-  students[index] = {
-    ...student,
+  document.getElementById("editAttendance").value = student.attendance;
 
-    name,
+  modal.style.display = "flex";
+}
 
-    age,
+// SAVE EDIT
+document.getElementById("saveEdit").addEventListener("click", () => {
+  students[currentEditIndex] = {
+    ...students[currentEditIndex],
 
-    city,
+    name: document.getElementById("editName").value,
 
-    marks: [Number(m1), Number(m2), Number(m3)],
+    age: document.getElementById("editAge").value,
+
+    city: document.getElementById("editCity").value,
+
+    attendance: document.getElementById("editAttendance").value === "true",
+
+    marks: [
+      Number(document.getElementById("editM1").value),
+
+      Number(document.getElementById("editM2").value),
+
+      Number(document.getElementById("editM3").value),
+    ],
   };
 
   saveData();
 
   displayStudents();
-}
 
-// ============================
+  modal.style.display = "none";
+
+  showToast("Student Updated", "#f59e0b");
+});
+
+// CLOSE MODAL
+document.getElementById("closeModal").addEventListener("click", () => {
+  modal.style.display = "none";
+});
+
 // SEARCH
-// ============================
-
 searchInput.addEventListener("keyup", () => {
   let value = searchInput.value.toLowerCase();
 
@@ -310,10 +350,7 @@ searchInput.addEventListener("keyup", () => {
   displayStudents(filtered);
 });
 
-// ============================
 // SORT
-// ============================
-
 sortBtn.addEventListener("click", () => {
   students.sort((a, b) => {
     return calculateTotal(b.marks) - calculateTotal(a.marks);
@@ -322,18 +359,12 @@ sortBtn.addEventListener("click", () => {
   displayStudents();
 });
 
-// ============================
-// SHOW ALL
-// ============================
-
+// SHOW
 showBtn.addEventListener("click", () => {
   displayStudents();
 });
 
-// ============================
-// EXPORT JSON
-// ============================
-
+// EXPORT
 exportBtn.addEventListener("click", () => {
   let data = JSON.stringify(students, null, 2);
 
@@ -350,20 +381,14 @@ exportBtn.addEventListener("click", () => {
   a.click();
 });
 
-// ============================
 // DARK MODE
-// ============================
-
 const themeToggle = document.getElementById("themeToggle");
 
 themeToggle.addEventListener("click", () => {
   document.body.classList.toggle("dark");
 });
 
-// ============================
 // CHART
-// ============================
-
 let chart;
 
 function updateChart() {
@@ -381,11 +406,11 @@ function updateChart() {
     type: "bar",
 
     data: {
-      labels: labels,
+      labels,
 
       datasets: [
         {
-          label: "Student Marks",
+          label: "Student Total Marks",
 
           data: totals,
 
@@ -406,8 +431,5 @@ function updateChart() {
   });
 }
 
-// ============================
 // INITIAL
-// ============================
-
 displayStudents();

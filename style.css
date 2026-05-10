@@ -23,8 +23,8 @@ body.dark {
 
 body {
   background: var(--bg);
-  font-family: Arial, sans-serif;
   color: var(--text);
+  font-family: Arial, sans-serif;
   transition: 0.3s;
 }
 
@@ -45,10 +45,6 @@ body {
   margin-bottom: 10px;
 }
 
-.header p {
-  color: gray;
-}
-
 .theme-btn {
   position: fixed;
   top: 20px;
@@ -56,9 +52,11 @@ body {
   border: none;
   background: var(--primary);
   color: white;
-  padding: 14px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   cursor: pointer;
+  font-size: 18px;
   z-index: 100;
 }
 
@@ -75,11 +73,6 @@ body {
   border-radius: 15px;
   text-align: center;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  transition: 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
 }
 
 .card i {
@@ -103,16 +96,17 @@ body {
   color: var(--warning);
 }
 
-.card h2 {
-  margin-bottom: 10px;
+.form-container,
+.chart-container,
+.student-card {
+  background: var(--card);
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
 }
 
 .form-container {
-  background: var(--card);
   padding: 25px;
-  border-radius: 15px;
   margin-bottom: 25px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
 .form-container h2 {
@@ -126,7 +120,9 @@ body {
 }
 
 .form-grid input,
-.form-grid select {
+.form-grid select,
+.modal-content input,
+.modal-content select {
   padding: 14px;
   border-radius: 10px;
   border: 1px solid #ccc;
@@ -145,6 +141,11 @@ button {
   transition: 0.3s;
 }
 
+button:hover {
+  transform: scale(1.03);
+  opacity: 0.9;
+}
+
 #addBtn {
   background: var(--success);
 }
@@ -159,11 +160,6 @@ button {
 
 #exportBtn {
   background: var(--secondary);
-}
-
-button:hover {
-  opacity: 0.9;
-  transform: scale(1.03);
 }
 
 .search-box {
@@ -181,22 +177,17 @@ button:hover {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
 .chart-container {
-  background: var(--card);
   padding: 20px;
-  border-radius: 15px;
   margin-bottom: 30px;
 }
 
 .student-card {
-  background: var(--card);
   padding: 20px;
-  border-radius: 15px;
   margin-bottom: 20px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
   border-left: 8px solid var(--primary);
 }
 
@@ -207,14 +198,13 @@ button:hover {
 }
 
 .student-header h3 {
-  font-size: 25px;
+  font-size: 28px;
 }
 
 .badge {
-  padding: 6px 12px;
-  border-radius: 20px;
   color: white;
-  font-size: 14px;
+  padding: 6px 14px;
+  border-radius: 20px;
 }
 
 .pass {
@@ -228,7 +218,7 @@ button:hover {
 .student-info {
   margin-top: 15px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 10px;
 }
 
@@ -244,6 +234,67 @@ button:hover {
 }
 
 .delete-btn {
+  background: var(--danger);
+}
+
+/* TOAST */
+
+#toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #16a34a;
+  color: white;
+  padding: 14px 25px;
+  border-radius: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.4s;
+  z-index: 9999;
+}
+
+#toast.show {
+  opacity: 1;
+  top: 40px;
+}
+
+/* MODAL */
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: var(--card);
+  padding: 30px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+#saveEdit {
+  background: var(--success);
+}
+
+#closeModal {
   background: var(--danger);
 }
 

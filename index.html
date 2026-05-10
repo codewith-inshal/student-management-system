@@ -2,7 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Advanced Student Management System</title>
 
     <!-- FONT AWESOME -->
@@ -19,15 +21,49 @@
   </head>
 
   <body>
-    <!-- DARK MODE BUTTON -->
+    <!-- THEME BUTTON -->
     <button id="themeToggle" class="theme-btn">
       <i class="fa-solid fa-moon"></i>
     </button>
+
+    <!-- TOAST -->
+    <div id="toast"></div>
+
+    <!-- EDIT MODAL -->
+    <div id="editModal" class="modal">
+      <div class="modal-content">
+        <h2>Edit Student</h2>
+
+        <input type="text" id="editName" placeholder="Name" />
+
+        <input type="number" id="editAge" placeholder="Age" />
+
+        <input type="text" id="editCity" placeholder="City" />
+
+        <input type="number" id="editM1" placeholder="Marks 1" />
+
+        <input type="number" id="editM2" placeholder="Marks 2" />
+
+        <input type="number" id="editM3" placeholder="Marks 3" />
+
+        <select id="editAttendance">
+          <option value="true">Present</option>
+          <option value="false">Absent</option>
+        </select>
+
+        <div class="modal-buttons">
+          <button id="saveEdit">Save</button>
+
+          <button id="closeModal">Cancel</button>
+        </div>
+      </div>
+    </div>
 
     <div class="container">
       <!-- HEADER -->
       <div class="header">
         <h1>🎓 Student Management System</h1>
+
         <p>Advanced CRUD System Without Backend</p>
       </div>
 
@@ -35,25 +71,33 @@
       <div class="dashboard">
         <div class="card total">
           <i class="fa-solid fa-users"></i>
+
           <h2 id="totalStudents">0</h2>
+
           <p>Total Students</p>
         </div>
 
         <div class="card passed">
           <i class="fa-solid fa-check"></i>
+
           <h2 id="passedStudents">0</h2>
+
           <p>Passed Students</p>
         </div>
 
         <div class="card failed">
           <i class="fa-solid fa-xmark"></i>
+
           <h2 id="failedStudents">0</h2>
+
           <p>Failed Students</p>
         </div>
 
         <div class="card topper">
           <i class="fa-solid fa-trophy"></i>
+
           <h2 id="topStudent">-</h2>
+
           <p>Top Student</p>
         </div>
       </div>
@@ -77,11 +121,13 @@
 
           <select id="attendance">
             <option value="true">Present</option>
+
             <option value="false">Absent</option>
           </select>
 
           <button id="addBtn">
             <i class="fa-solid fa-plus"></i>
+
             Add Student
           </button>
         </div>
@@ -100,16 +146,19 @@
       <div class="action-buttons">
         <button id="showBtn">
           <i class="fa-solid fa-list"></i>
+
           All Students
         </button>
 
         <button id="sortBtn">
           <i class="fa-solid fa-sort"></i>
+
           Sort By Marks
         </button>
 
         <button id="exportBtn">
           <i class="fa-solid fa-file-export"></i>
+
           Export Data
         </button>
       </div>
@@ -119,7 +168,7 @@
         <canvas id="studentChart"></canvas>
       </div>
 
-      <!-- STUDENTS -->
+      <!-- OUTPUT -->
       <div id="output"></div>
     </div>
 
